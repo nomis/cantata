@@ -178,7 +178,6 @@ public Q_SLOTS:
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
     void streamUrl(const QString &u);
-    void refreshDbPromp();
     void showServerInfo();
     void stopPlayback();
     void stopAfterCurrentTrack();
@@ -293,7 +292,6 @@ private:
     bool shown;
     Action *prefAction;
     Action *refreshDbAction;
-    Action *doDbRefreshAction;
     Action *connectAction;
     Action *connectionsAction;
     Action *partitionsAction;

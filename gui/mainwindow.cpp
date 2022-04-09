@@ -278,7 +278,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(serverInfoAction, SIGNAL(triggered()),this, SLOT(showServerInfo()));
     serverInfoAction->setEnabled(Settings::self()->firstRun());
     refreshDbAction = ActionCollection::get()->createAction("refresh", tr("Refresh Database"), Icons::self()->refreshIcon);
-    doDbRefreshAction = new Action(refreshDbAction->icon(), tr("Refresh"), this);
     refreshDbAction->setEnabled(false);
     connectAction = new Action(Icons::self()->connectIcon, tr("Connect"), this);
     connectionsAction = new Action(MonoIcon::icon(FontAwesome::server, iconCol), tr("Collection"), this);
@@ -828,10 +827,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(connectionNotChanged(QString)), SLOT(mpdConnectionName(QString)));
     connect(MpdLibraryModel::self(), SIGNAL(error(QString)), SLOT(showError(QString)));
     connect(ApiKeys::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
-    connect(refreshDbAction, SIGNAL(triggered()), this, SLOT(refreshDbPromp()));
-    connect(doDbRefreshAction, SIGNAL(triggered()), MpdLibraryModel::self(), SLOT(clearDb()));
-    connect(doDbRefreshAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
-    connect(doDbRefreshAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
+    connect(refreshDbAction, SIGNAL(triggered()), MpdLibraryModel::self(), SLOT(clearDb()));
+    connect(refreshDbAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(update()));
+    connect(refreshDbAction, SIGNAL(triggered()), messageWidget, SLOT(animatedHide()));
     connect(connectAction, SIGNAL(triggered()), this, SLOT(connectToMpd()));
     connect(StdActions::self()->prevTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToPrevious()));
     connect(StdActions::self()->nextTrackAction, SIGNAL(triggered()), MPDConnection::self(), SLOT(goToNext()));
@@ -1225,18 +1223,6 @@ void MainWindow::streamUrl(const QString &u)
     #else
     Q_UNUSED(u)
     #endif
-}
-
-void MainWindow::refreshDbPromp()
-{
-    int btnLayout=style()->styleHint(QStyle::SH_DialogButtonLayout);
-    if (QDialogButtonBox::GnomeLayout==btnLayout || QDialogButtonBox::MacLayout==btnLayout) {
-        messageWidget->setActions(QList<QAction*>() << cancelAction << doDbRefreshAction);
-    } else {
-        messageWidget->setActions(QList<QAction*>() << doDbRefreshAction << cancelAction);
-    }
-    messageWidget->setWarning(tr("Refresh MPD Database?"), false);
-    expand();
 }
 
 void MainWindow::showAboutDialog()
