@@ -1102,6 +1102,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit playListInfo();
             emit outputs();
             MpdLibraryModel::self()->reload();
+            folderPage->mpd()->load();
             if (CS_Init!=connectedState) {
                 currentTabChanged(tabWidget->currentIndex());
             }
