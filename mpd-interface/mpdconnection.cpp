@@ -535,21 +535,8 @@ void MPDConnection::reconnect()
     ConnectionReturn status=connectToMPD();
     switch (status) {
     case Success:
-        // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
-        if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
-            sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
-        }
-        serverInfo.detect();
-        listPartitions();
-        getStatus();
-        getStats();
-        getUrlHandlers();
-        getTagTypes();
-        getStickerSupport();
-        playListInfo();
-        outputs();
-        reconnectStart=0;
-        determineIfaceIp();
+        afterConnect();
+		reconnectStart=0;
         emit stateChanged(true);
         break;
     case Failed:
@@ -629,20 +616,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
         ConnectionReturn status=connectToMPD();
         switch (status) {
         case Success:
-            // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
-            if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
-                sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
-            }
-            serverInfo.detect();
-            listPartitions();
-            getStatus();
-            getStats();
-            getUrlHandlers();
-            getTagTypes();
-            getStickerSupport();
-            playListInfo();
-            outputs();
-            determineIfaceIp();
+            afterConnect();
             emit stateChanged(true);
             break;
         default:
@@ -674,6 +648,24 @@ void MPDConnection::setDetails(const MPDConnectionDetails &d)
 //    }
 //}
 
+void MPDConnection::afterConnect()
+{
+    // Issue #1041 - MPD does not seem to persist user/client made replaygain changes, so use the values read from Cantata's config.
+    if (replaygainSupported() && details.applyReplayGain && !details.replayGain.isEmpty()) {
+        sendCommand("replay_gain_mode "+details.replayGain.toLatin1());
+    }
+    serverInfo.detect();
+    listPartitions();
+    getStatus();
+    getStats();
+    getUrlHandlers();
+    getTagTypes();
+    getStickerSupport();
+    playListInfo();
+    outputs();
+    determineIfaceIp();
+}
+
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors, bool retry)
 {
     connTimer->stop();
@@ -699,9 +691,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         } else {
             // Refresh playqueue...
             reconnected=true;
-            listPartitions();
-            playListInfo();
-            getStatus();
+            afterConnect();
             reconnected=false;
         }
     }
