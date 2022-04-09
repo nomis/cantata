@@ -13,7 +13,7 @@ RequestExecutionLevel admin
 SetCompressor /SOLID lzma
 !include "MUI2.nsh"
  
-InstallDir "$PROGRAMFILES\@WINDOWS_APP_NAME@"
+InstallDir "$PROGRAMFILES64\@WINDOWS_APP_NAME@"
 # This will be in the installer/uninstaller's title bar
 Name "@WINDOWS_APP_NAME@"
 Icon "cantata.ico"
@@ -23,6 +23,8 @@ outFile "@WINDOWS_APP_NAME@-@CANTATA_VERSION_WITH_SPIN@-Setup.exe"
 !define MUI_ICON "cantata.ico"
 
 !insertmacro MUI_PAGE_WELCOME
+!define MUI_LICENSEPAGE_BUTTON "$(^NextBtn)"
+!define MUI_LICENSEPAGE_TEXT_BOTTOM "$(^ClickNext)"
 !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -109,11 +111,11 @@ section "install"
     #file "icudt52.dll"
     #file "icuin52.dll"
     #file "icuuc52.dll"
-    file "libgcc_s_dw2-1.dll"
+    file "libgcc_s_seh-1.dll"
     file "libstdc++-6.dll"
     file "libtag.dll"
     file "libwinpthread-1.dll"
-    file "libz-1.dll"
+    file "zlib1.dll"
     @CANTATA_SSL_WIN_NSIS_INSTALL@
     setOutPath $INSTDIR\iconengines
     file "iconengines\qsvgicon.dll"
@@ -526,7 +528,6 @@ section "uninstall"
     delete "$INSTDIR\platforms\qwindows.dll"
     delete "$INSTDIR\Qt4 README.txt"
     delete "$INSTDIR\Qt License (LGPL V2).txt"
-    delete "$INSTDIR\QtNetwork4.dll"
     delete "$INSTDIR\TagLib README.txt"
 
     delete "$INSTDIR\QtNetwork4.dll"
@@ -536,6 +537,7 @@ section "uninstall"
     delete "$INSTDIR\QtGui4.dll"
     delete "$INSTDIR\QtSql4.dll"
     delete "$INSTDIR\libgcc_s_dw2-1.dll"
+    delete "$INSTDIR\libgcc_s_seh-1.dll"
     delete "$INSTDIR\libtag.dll"
     delete "$INSTDIR\mingwm10.dll"
 
@@ -558,6 +560,8 @@ section "uninstall"
     delete "$INSTDIR\libz-1.dll"
     delete "$INSTDIR\libeay32.dll"
     delete "$INSTDIR\ssleay32.dll"
+    delete "$INSTDIR\libcrypto-1_1-x64.dll"
+    delete "$INSTDIR\libssl-1_1-x64.dll"
 
     delete "$INSTDIR\translations\cantata_cs.qm"
     delete "$INSTDIR\translations\cantata_da.qm"

@@ -4,7 +4,7 @@ foreach (TS_FILE ${TS_FILES})
     list(APPEND CANTATA_TRANS "${TRANS}")
 endforeach ()
 
-find_package(Qt5LinguistTools ${QT_MIN_VERSION} QUIET)
+find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS LinguistTools QUIET)
 
 if (Qt5LinguistTools_FOUND)
     set(catalogname cantata)

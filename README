@@ -730,18 +730,17 @@ This assumes the following folder structure:
     z:\dev\Qt
     z:\dev\taglib
     z:\dev\zlib
-    z:\dev\ssl              [ libeay32.dll and ssleay32.dll ]
-s
+    z:\dev\ssl              [ libcrypto-1_1-x64.dll and libssl-1_1-x64.dll ]
 
-1. Install Qt (5.3 or later), cmake, TagLib and zlib. TagLib and zlib will probably
+1. Install Qt (5.15 or later), cmake, TagLib and zlib. TagLib and zlib will probably
    need compiling.
 
 2. Set (or amend) the following environemnt variables:
-    QTDIR=z:\dev\Qt\5.3\mingw482_32
-    PATH=z:\dev\Qt\5.3\mingw482_32\bin;z:\dev\Qt\Tools\mingw482_32\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
+    QTDIR=z:\dev\Qt\5.15\mingw482_32
+    PATH=z:\dev\Qt\5.15\mingw482_32\bin;z:\dev\Qt\Tools\mingw482_32\bin;z:\dev\taglib\bin;z:\dev\cmake\bin
 
 3. Load cantata's CMakeLists.txt in QtCreator, and pass the following to cmake:
-     ../src -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/lib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_SSL_LIBS=z:/dev/ssl/libeay32.dll;z:/dev/ssl/ssleay32.dll
+     ../src -DCMAKE_BUILD_TYPE=Release -DENABLE_TAGLIB=OFF -DTAGLIB_FOUND=1 -DTAGLIB_INCLUDES=z:/dev/taglib/include -DTAGLIB_LIBRARIES=z:/dev/taglib/lib/libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DTAGLIB_CAN_SAVE_ID3VER=1 -DZLIB_INCLUDE_DIR=z:/dev/zlib/include -DZLIB_LIBRARY=z:/dev/zlib/lib/libz.dll.a -DCMAKE_INSTALL_PREFIX=z:/cantata/install -DCANTATA_WINDOWS_INSTALLER_DEST=z:/cantata -DCANTATA_SSL_LIBS=z:/dev/ssl/libcrypto-1_1-x64.dll;z:/dev/ssl/libssl-1_1-x64.dll
 
    Notes: -DENABLE_TAGLIB=OFF stops cmake from trying to find TagLib, as the
           TagLib settings have been manually set,
@@ -769,7 +768,7 @@ folder as well.
 TagLib
 ------
 
-Windows version of taglib was built from TagLib 1.9.1, using QtCreator with the
+Windows version of taglib was built from TagLib 1.12, using QtCreator with the
 following passed to cmake:
 
     -DCMAKE_BUILD_TYPE=Release -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PREFIX=z:\dev\taglib
