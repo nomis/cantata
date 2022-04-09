@@ -1243,10 +1243,11 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, tr("About Cantata"),
                        tr("<b>Cantata %1</b><br/><br/>MPD client.<br/><br/>"
-                           "&copy; 2011-2022 Craig Drummond<br/>Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>").arg(PACKAGE_VERSION_STRING)+
-                       QLatin1String("<br/><br/>")+
-                       tr("Please refer to <a href=\"https://github.com/CDrummond/cantata/issues\">Cantata's issue tracker</a> for a list of known issues, and to report new issues.")+
+                           "&copy; 2011-2022 Craig Drummond<br/>"
+                           "&copy; 2022 Simon Arlott<br/>"
+                           "Released under the <a href=\"http://www.gnu.org/licenses/gpl.html\">GPLv3</a>").arg(PACKAGE_VERSION_STRING)+
                        QLatin1String("<br/><br/><i><small>")+
+                       tr("Based upon <a href=\"https://github.com/CDrummond/cantata\">CDrummond/cantata</a> - &copy; 2011-2022 Craig Drummond<br/>")+
                        tr("Based upon <a href=\"http://lowblog.nl\">QtMPC</a> - &copy; 2007-2010 The QtMPC Authors<br/>")+
                        tr("Context view backdrops courtesy of <a href=\"http://www.fanart.tv\">FanArt.tv</a>")+QLatin1String("<br/>")+
                        tr("Context view metadata courtesy of <a href=\"http://www.wikipedia.org\">Wikipedia</a> and <a href=\"http://www.last.fm\">Last.fm</a>")+
