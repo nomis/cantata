@@ -553,7 +553,7 @@ void MPDConnection::reconnect()
         emit stateChanged(true);
         break;
     case Failed:
-        if (0==reconnectStart || std::abs(now-reconnectStart)<15) {
+        if (0==reconnectStart || std::abs(now-reconnectStart)<30) {
             if (0==reconnectStart) {
                 reconnectStart=now;
             }
@@ -1641,6 +1641,13 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             disconnectFromMPD();
             emit stateChanged(false);
             emit error(errorString(status), true);
+
+            if (!reconnectTimer) {
+                reconnectTimer=new QTimer(this);
+                reconnectTimer->setSingleShot(true);
+                connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
+            }
+            reconnectTimer->start(500);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
