@@ -495,6 +495,7 @@ private:
     void getStickerSupport();
     void playFirstTrack(bool emitErrors);
     void determineIfaceIp();
+    void reconnectSoon();
     void afterConnect();
 
 private:

@@ -486,6 +486,9 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
             #endif
         }
     }
+    if (status != Success) {
+        reconnectSoon();
+    }
     connTimer->start(constConnTimer);
     return status;
 }
@@ -544,15 +547,10 @@ void MPDConnection::reconnect()
             if (0==reconnectStart) {
                 reconnectStart=now;
             }
-            if (!reconnectTimer) {
-                reconnectTimer=new QTimer(this);
-                reconnectTimer->setSingleShot(true);
-                connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
-            }
             if (std::abs(now-reconnectStart)>1) {
                 emit info(tr("Connecting to %1").arg(details.description()));
             }
-            reconnectTimer->start(500);
+            reconnectSoon();
         } else {
             emit stateChanged(false);
             emit error(errorString(Failed), true);
@@ -1611,6 +1609,16 @@ void MPDConnection::idleDataReady()
     parseIdleReturn(readFromSocket(idleSocket));
 }
 
+void MPDConnection::reconnectSoon()
+{
+    if (!reconnectTimer) {
+        reconnectTimer=new QTimer(this);
+        reconnectTimer->setSingleShot(true);
+        connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
+    }
+    reconnectTimer->start(500);
+}
+
 /*
  * Socket state has changed, currently we only use this to gracefully
  * handle disconnects.
@@ -1631,13 +1639,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             disconnectFromMPD();
             emit stateChanged(false);
             emit error(errorString(status), true);
-
-            if (!reconnectTimer) {
-                reconnectTimer=new QTimer(this);
-                reconnectTimer->setSingleShot(true);
-                connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
-            }
-            reconnectTimer->start(500);
+            reconnectSoon();
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
@@ -1666,6 +1668,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             disconnectFromMPD();
             emit stateChanged(false);
             emit error(errorString(status), true);
+            reconnectSoon();
         }
         return;
     }
