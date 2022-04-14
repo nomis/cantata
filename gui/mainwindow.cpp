@@ -1102,13 +1102,13 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit playListInfo();
             emit outputs();
             MpdLibraryModel::self()->reload();
-            folderPage->mpd()->load();
             if (CS_Init!=connectedState) {
                 currentTabChanged(tabWidget->currentIndex());
             }
             connectedState=CS_Connected;
             StdActions::self()->addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
             StdActions::self()->setPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
+            folderPage->mpd()->load();
         }
     } else {
         libraryPage->clear();
