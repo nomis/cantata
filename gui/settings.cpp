@@ -576,6 +576,11 @@ bool Settings::forceSingleClick()
     return cfg.get("forceSingleClick", true);
 }
 
+bool Settings::useWindowAlerts()
+{
+    return cfg.get("useWindowAlerts", true);
+}
+
 bool Settings::startHidden()
 {
     return useSystemTray() ? cfg.get("startHidden", false) : false;
@@ -1069,6 +1074,11 @@ void Settings::saveCddbPort(int v)
 void Settings::saveForceSingleClick(bool v)
 {
     cfg.set("forceSingleClick", v);
+}
+
+void Settings::saveUseWindowAlerts(bool v)
+{
+    cfg.set("useWindowAlerts", v);
 }
 
 void Settings::saveStartHidden(bool v)

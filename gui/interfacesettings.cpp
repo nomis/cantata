@@ -256,6 +256,7 @@ void InterfaceSettings::load()
     playQueueSearch->setChecked(Settings::self()->playQueueSearch());
     playQueueViewChanged();
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
+    useWindowAlerts->setChecked(Settings::self()->useWindowAlerts());
     infoTooltips->setChecked(Settings::self()->infoTooltips());
     showStopButton->setChecked(Settings::self()->showStopButton());
     showCoverWidget->setChecked(Settings::self()->showCoverWidget());
@@ -344,6 +345,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueConfirmClear(playQueueConfirmClear->isChecked());
     Settings::self()->savePlayQueueSearch(playQueueSearch->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
+    Settings::self()->saveUseWindowAlerts(useWindowAlerts->isChecked());
     Settings::self()->saveInfoTooltips(infoTooltips->isChecked());
     Settings::self()->saveShowStopButton(showStopButton->isChecked());
     Settings::self()->saveShowCoverWidget(showCoverWidget->isChecked());

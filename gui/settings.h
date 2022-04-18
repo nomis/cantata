@@ -120,6 +120,7 @@ public:
     int cddbPort();
     #endif
     bool forceSingleClick();
+    bool useWindowAlerts();
     bool startHidden();
     bool showTimeRemaining();
     QStringList hiddenStreamCategories();
@@ -226,6 +227,7 @@ public:
     void saveCddbPort(int v);
     #endif
     void saveForceSingleClick(bool v);
+    void saveUseWindowAlerts(bool v);
     void saveStartHidden(bool v);
     void saveShowTimeRemaining(bool v);
     void saveHiddenStreamCategories(const QStringList &v);
